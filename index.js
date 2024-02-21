@@ -3,7 +3,7 @@ import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebas
 
 // Firebase configuration
 const firebaseConfig = {
-    databaseURL: process.env.LUNCH_VOTE_DB
+    databaseURL: "https://lunchvote-bd339-default-rtdb.firebaseio.com/"
 };
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
