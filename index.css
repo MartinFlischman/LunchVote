@@ -121,7 +121,7 @@ li:hover {
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    margin-top: 20px; /* Add some space above the button */
+    margin: 20px auto 0; /* Add some space above the button */
 }
 
 #deletePoll:hover {

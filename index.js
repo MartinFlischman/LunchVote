@@ -1,6 +1,6 @@
 // Import required Firebase modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-app.js";
-import { getDatabase, ref, push, onValue, update } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-database.js";
+import { getDatabase, ref, push, onValue, update, set } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-database.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -17,6 +17,15 @@ const placeForm = document.getElementById('placeForm');
 const placesList = document.getElementById('placesList');
 const placeInput = document.getElementById('placeInput');
 const leadingPlaceDisplay = document.getElementById('leadingPlace');
+const deletePollButton = document.getElementById('deletePoll');
+
+// Function to reset the poll
+function resetPoll() {
+  set(placesRef, {}); // Clear the 'places' node in the database
+  leadingPlaceDisplay.textContent = ''; // Clear the leading place display
+  placesList.innerHTML = ''; // Clear the list of places
+  deletePollButton.style.display = 'none'; // Hide the delete button
+}
 
 // Function to update the user's vote in Firebase and Local Storage
 function updateUserVote(newVoteKey) {
@@ -57,6 +66,12 @@ placeForm.addEventListener('submit', (e) => {
 
 // Listen for real-time updates from Firebase
 onValue(placesRef, (snapshot) => {
+  if (snapshot.exists() && snapshot.hasChildren()) {
+    deletePollButton.style.display = 'block'; // Show the delete button
+  } else {
+    deletePollButton.style.display = 'none'; // Hide the delete button if no polls
+  }
+  
   placesList.innerHTML = '';
   let leadingPlace = { name: '', votes: -1 };
 
@@ -88,3 +103,6 @@ onValue(placesRef, (snapshot) => {
     leadingPlaceDisplay.textContent = `Leading Place: ${leadingPlace.name} with ${leadingPlace.votes} votes`;
   }
 });
+
+// Event listener for the delete button
+deletePollButton.addEventListener('click', resetPoll);
